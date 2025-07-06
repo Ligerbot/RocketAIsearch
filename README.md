@@ -9,3 +9,5 @@ __This project uses Ollama so the Ollama server must be running__
 * First, run a webserver in the root directory of the project. I used python's simple http server and it worked well.
 * Second, set your API key and search engine ID in the python file. Search up "google search api" for help. Also be sure to change the model in use. tinyllama is very bad but I am forced to use it because my laptop is bad.
 * Run `python3 rocketAIsearch.py`
+# info
+### Currently I am no longer working on this project. I may update it occasionally.
