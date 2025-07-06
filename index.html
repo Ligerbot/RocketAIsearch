@@ -4,15 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rocket AI Search Engine</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style_test.css">
 </head>
 <body> 
 <nav>
   <a href="/index.html">Search</a>
   <a href="/test.html">Test page</a>
 </nav>
+<iframe id="links" src="/urlList.txt"></iframe>
 
 <div id="chat-container">
+
   <h2>Rocket AI Search</h2>
   <br>
   <div class="dropdown">
@@ -37,6 +39,7 @@
   </center>
   </div>
 </div>
+
 <script>
   document.addEventListener("keydown", function(event) {
     if (event.key === "Enter") {
@@ -92,6 +95,8 @@ function fetchConsoleOutput() {
   document.getElementById("status").style.color = "orange";
   document.getElementById("status").textContent = "Status: Fetching";
   getModel();
+  var iframe = document.getElementById('links');
+  iframe.src = iframe.src;
   fetch('out.txt', {cache: "no-store"})
     .then(response => response.text())
     .then(data => {
