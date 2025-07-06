@@ -1,0 +1,10 @@
+Added changelog! 4/23/25
+Added model display! 4/25/25
+Please help docker is so annoying I might punch something.
+Added model response status 4/25/25
+Added the cheeseburger request system 4/25/25
+(I spent way too much time on this one feature)
+Added a convenience update (enter key now sends messages) 4/25/25
+------------------------------------------------------------------
+Copied this code from my AI chatbot webpage to use for AI search. This changelog file keeps trying to download because I am using a simple http server instead
+of an Apache webserver but I am not 100% sure. My browser is going insane

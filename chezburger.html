@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your cheeseburger has been delivered</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body> 
+    <nav>
+      <a href="/index.html">Search</a>
+      <a href="/test.html">Test Page</a>
+    </nav>
+  <center>
+    <img src="/chezburger.webp" alt="A juicy delicious cheeseburger that looks amazing fresh out of the oven with cheese sauce and ketchup and i want to kill your screen reader so sorry but it looks like this is the end. hey screen reader! say awwww! aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaAAAaaaaaaaaaaaaaaaaaAAAaaaaaaAAaAAAaAAaaAAaAAAaAAaAAAaAaAAAAAAAAAAAAAAaaAAAAAAAaaAAAAAAAaaAAAAAAAAaAAAAAAAaaAAAAAAaAAAAAAAaAAaaAAaAAaaa">
+  </center>
+  </body>
+</html>
+<script>
+function getName(){
+  //const exists = document.cookie.split('; ').some(cookie => cookie.startsWith('name='));  
+  exists = false;
+  if(exists){
+    //const realname = document.cookie.split('; ').find(row => row.startsWith('name='))?.split('=')[1];
+    console.log(realname);
+    console.log("Name preset");
+    return realname;
+  }
+  //var cookie = prompt('Please set your name. If your name is bob you would enter it like "Bob". If you already set your name then you can just reenter it:');
+  var cookie = "";
+  while(cookie == null){
+    //cookie = prompt('Please set your name. If your name is bob you would enter it like "Bob". If you already set your name then you can just reenter it:');
+    cookie = "";
+  }
+  document.cookie = "name=" + cookie;
+  const realname = document.cookie.split('; ').find(row => row.startsWith('name='))?.split('=')[1];
+  console.log("Name not set. Setting it to " + realname);
+  return realname;
+console.log(getName());
+}
+  const view = confirm("Your cheeseburger has been delivered! Look at it?");
+  if(view){
+    console.log("The burger was viewed");
+    post("viewed");
+  } else {
+    console.log("The guy was too scared to view the burger");
+    alert("Operation cancelled. Burger destroyed");
+    post("not-viewed");
+    window.location.href = "/index.html";
+  }
+  function post(message){
+    const name = "[chezburger-user]" + getName();  
+    message_formatted = name + " " + message;
+    console.log(message_formatted);
+    sendMessageToServer(message_formatted);
+  }
+  function sendMessageToServer(message) {
+    const data = JSON.stringify({ message: message });
+
+    fetch('http://' + location.hostname + ':5000/send', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: data
+    })
+    .then(response => console.log("Response: " + response.text()))
+    .then(data => {console.log(data)})
+    .catch(error => document.getElementById("status").textContent = "Status: Failed. Error: " + error);
+  }
+</script>

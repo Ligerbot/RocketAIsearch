@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rocket AI Search Engine</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body> 
+<nav>
+  <a href="/index.html">Search</a>
+  <a href="/test.html">Test page</a>
+</nav>
+
+<div id="chat-container">
+  <h2>Rocket AI Search</h2>
+  <br>
+  <div class="dropdown">
+    <drop class="dropbtn">Help:</drop>
+    <div class="dropdown-content">
+      <p>Don't try to hack the search engine, otherwise you will be fed to the ferocious killer chicken.</p>
+      <p>My 5 year old laptop without a gpu can't run llms that fast so if you get errors don't be suprised.</p>
+      <p>Stuff actually runs suprisingly fast with Arch Linux</p>
+      <p>Changelog:</p>
+      <iframe src="changelog" width="50%" height="400px"></iframe>
+      <img src='../dwayne_killer.jpg', width='227', height='403'>
+    </div>
+  </div>
+  <button id="request">Request a cheeseburger</button>
+  <div id="chat-container">
+  <div id="chat-messages"></div>
+  <center>
+  <input type="text" id="message-input" placeholder="Type your message">
+  <button id="send-message">Send</button>
+  <status id="status">Enable JS</status>
+  <model id="model">Model: Error</model>
+  </center>
+  </div>
+</div>
+<script>
+  document.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+      document.getElementById("send-message").click();
+    }
+  });
+  const request = document.getElementById("request");
+    request.addEventListener("click", () => {
+      request.classList.toggle("toggled");
+      document.getElementById("request").textContent = "Cheeseburger requested; please wait";
+      alert("Your cheeseburger has arrived");
+      window.location.href = "/chezburger.html";
+    });
+  document.getElementById("status").style.color = "green";
+  document.getElementById("status").textContent = "Status: Idle";
+function getModel(){
+  fetch('model.txt', {cache: "no-store"})
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById("model").textContent = "Model: " + data;
+    })
+  }
+function checkCookieAndRedirect() {
+  const exists = document.cookie.split('; ').some(cookie => cookie.startsWith('name='));
+  if(exists){
+    //const realname = document.cookie.split('; ').find(row => row.startsWith('name='))?.split('=')[1];
+    const realname = ""
+    console.log(realname);
+    console.log("Name preset");
+    return realname;
+  }
+  var cookie = prompt('Please set your name. If your name is bob you would enter it like "Bob". If you already set your name then you can just reenter it:');
+  while(cookie == null){
+    cookie = prompt('Please set your name. If your name is bob you would enter it like "Bob". If you already set your name then you can just reenter it:');
+  }
+  document.cookie = "name=" + cookie;
+  const realname = document.cookie.split('; ').find(row => row.startsWith('name='))?.split('=')[1];
+  console.log("Name not set. Setting it to " + realname);
+  return realname;
+}
+
+// Run the cookie check and redirection logic
+
+const nameInput = "[User]";
+
+const chatContainer = document.getElementById('chat-container');
+const currentDate = new Date();
+console.log(currentDate.getFullYear() - 2020);
+const chatMessages = document.getElementById('chat-messages');
+const updateInterval = 2000; // Update every 1/2 seconds (adjust as needed)
+const cookie = document.cookie;
+function fetchConsoleOutput() {
+  document.getElementById("status").style.color = "orange";
+  document.getElementById("status").textContent = "Status: Fetching";
+  getModel();
+  fetch('out.txt', {cache: "no-store"})
+    .then(response => response.text())
+    .then(data => {
+      // Process and display new messages
+      const formattedMessages = formatMessages(data);
+      chatMessages.innerHTML = formattedMessages;
+    })
+    .catch(error => console.error(error));
+  document.getElementById("status").style.color = "green";
+  document.getElementById("status").textContent = "Status: Idle";
+
+  setTimeout(fetchConsoleOutput, updateInterval);
+}
+
+// Get input and button elements
+//const nameInput = document.getElementById('name-input');
+const messageInput = document.getElementById('message-input');
+const sendMessageButton = document.getElementById('send-message');
+
+// Add event listener to send button click
+sendMessageButton.addEventListener('click', function() {
+  const message = messageInput.value.trim();
+
+  if (message) {
+    document.getElementById("status").style.color = "orange";
+    document.getElementById("status").textContent = "Status: Posting";
+    // Construct formatted message with proper escaping
+    const formattedMessage = escapeHtml(message);
+
+    // Send message to server (implementation details below)
+    console.log(formattedMessage);
+    sendMessageToServer(formattedMessage);
+    messageInput.value = '';
+  }
+});
+
+// Function to send message to server (implementation needed)
+function sendMessageToServer(message) {
+  const data = JSON.stringify({ message: message }); // Assuming message data is in an object
+
+  fetch('http://' + location.hostname + ':5000/send', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: data
+  })
+  .then(response => console.log("Response: " + response.text()))
+  .then(data => {console.log(data)})
+  .catch(error => document.getElementById("status").textContent = "Status: Failed. Error: " + error);
+}
+
+function formatMessages(rawData) {
+  // Replace with your logic to split and format raw data into messages
+  const messages = rawData.split('\n'); // Simple line split (might need adjustment)
+  let formattedOutput = '';
+  for (var message of messages) {
+    if (message.trim() !== '') { // Ignore empty lines (optional)
+      message = escapeHtml(message);
+      formattedOutput += `<p>${message}</p>`;
+    }
+  }
+  return formattedOutput;
+}
+
+// Function to escape HTML characters for safe display
+function escapeHtml(str) {
+  const map = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  };
+  return str.replace(/[&<>"']/g, char => map[char]);
+}
+
+fetchConsoleOutput(); // Call initially
+</script>
+</body>
+</html>
