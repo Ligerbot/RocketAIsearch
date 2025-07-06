@@ -1,5 +1,6 @@
 # RocketAIsearch
 RocketAIsearch is an LLM search engine.
+![rocket ai search engine picture](rocketAIsearch.png)
 # How it works
 * RocketAIsearch uses the Google search API to gather 10 of the most relevant sources.
 * This info is then fed into the LLM, which can be chosen by modifying the Python file.
